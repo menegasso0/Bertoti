@@ -63,7 +63,7 @@ Aqui estão os exemplos de trade-offs:
 
 
 
-![Diagrama UML](./assets/diagrama-uml.png)
+![Diagrama UML](./assets/diagramauml.png)
 
 
 
