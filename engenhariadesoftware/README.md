@@ -2,11 +2,13 @@
 
 
 
-O aspecto mais notável deste texto é como ele expõe uma tensão central na indústria: a confusão entre "programação" e "engenharia". O texto argumenta que a engenharia de software, diferentemente da programação pura, precisa de rigor similar ao das engenharias tradicionais (como a aeronáutica), especialmente porque o software agora controla infraestruturas críticas.
+O principal ponto de discussão do texto está na comparação equívoca entre engenharia de software, e os outros tipos de engenharia. O texto argumenta que a engenharia de software, diferentemente da programação pura, precisa de rigor similar ao das engenharias tradicionais (como a aeronáutica), especialmente porque o software agora controla infraestruturas críticas.
 
 
 
 Este rigor é necessário para gerenciar a natureza intangível do software. Enquanto um engenheiro civil vê sua ponte, um engenheiro de software lida com uma arquitetura complexa, muitas vezes invisível, composta por várias linguagens e vários códigos. O texto sugere que falhas (como o custo de operação de uma plataforma ou os desafios de integração de sistemas) não são mais aceitáveis. A "Engenharia de Software" é, portanto, a disciplina que aplica práticas rigorosas para controlar essa complexidade intangível e garantir a confiabilidade.
+
+Principalmente nos dias de hoje, por mais que não seja considerada de tanta importância, talvez por não ser "visível" aos olhos do público, a engenharia de software é importante e crítica, com profissionais que devem ser capaz de manusear e lidar com imprevistos de maneira rápida e eficiente, justamente por ser tão necessária. A engenharia de software é a base de um sistema que pode abranger diversas funcionalidades, e um erro qualquer que seja, pode custar bilhões de dólares.
 
 
 
@@ -29,18 +31,15 @@ Isso significa que a engenharia de software não é apenas o ato de escrever o c
 
 
 Em suma, o texto redefine a engenharia de software como uma disciplina estratégica focada na sustentabilidade do código diante das pressões do Tempo, da Escala e dos Trade-offs.
-
+Um profissional dessa área deve ser capaz de lidar com todas essas responsabilidades e sempre pensar na manutenção futura de seu código, organizando tudo pensando nos erros do amanhã.
 
 
 # atividade 3
 
 
 
-O princípio de "Trade-offs e Custos" é, na prática, a **negociação de requisitos não-funcionais**. Raras vezes é possível ter tudo (máxima performance, máxima escalabilidade e máximo baixo custo), então a engenharia exige escolhas de compromisso.
+O princípio de "Trade-offs e Custos" é, na prática, a **negociação de requisitos não-funcionais**. Raras vezes é possível ter tudo (máxima performance, máxima escalabilidade e máximo baixo custo), então a engenharia exige escolhas de compromisso. 3 grandes exemplos de trade-offs
 
-
-
-Aqui estão os exemplos de trade-offs:
 
 
 
