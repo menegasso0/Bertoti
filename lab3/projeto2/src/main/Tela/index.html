@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa Loja de Equipamentos</title>
+    <style>
+        /* A nossa decoração (CSS) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        .form-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-salvar { background-color: #27ae60; color: white; }
+        .btn-salvar:hover { background-color: #219150; }
+        .btn-editar { background-color: #f39c12; color: white; padding: 5px 10px; }
+        .btn-deletar { background-color: #e74c3c; color: white; padding: 5px 10px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th { background-color: #2c3e50; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .acoes { display: flex; gap: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Estoque da Loja</h1>
+
+    <div class="form-group">
+        <input type="hidden" id="produtoId"> <input type="text" id="nome" placeholder="Nome do Equipamento (ex: Poção)">
+        <input type="number" id="preco" placeholder="Preço (ex: 50.50)" step="0.01">
+        <input type="number" id="quantidade" placeholder="Quantidade">
+        <button class="btn-salvar" onclick="salvarProduto()">Salvar na Prateleira</button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Preço (R$)</th>
+            <th>Quantidade</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="tabelaProdutos">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // A Mágica (JavaScript)
+    const apiUrl = 'http://localhost:8080/api/produtos';
+
+    // GET: Olhar as prateleiras quando a página abre
+    async function carregarProdutos() {
+        try {
+            const resposta = await fetch(apiUrl);
+            const produtos = await resposta.json();
+            const tabela = document.getElementById('tabelaProdutos');
+            tabela.innerHTML = ''; // Limpa a tabela antes de preencher
+
+            produtos.forEach(produto => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>R$ ${produto.preco.toFixed(2)}</td>
+                    <td>${produto.quantidade}</td>
+                    <td class="acoes">
+                        <button class="btn-editar" onclick="prepararEdicao(${produto.id}, '${produto.nome}', ${produto.preco}, ${produto.quantidade})">Editar</button>
+                        <button class="btn-deletar" onclick="deletarProduto(${produto.id})">Excluir</button>
+                    </td>
+                `;
+                tabela.appendChild(linha);
+            });
+        } catch (erro) {
+            console.error("Erro ao buscar produtos:", erro);
+            alert("Falha ao acessar estoque, verifique se o código está rodando.");
+        }
+    }
+
+    // POST ou PUT: Salvar um item novo ou atualizar um existente
+    async function salvarProduto() {
+        const id = document.getElementById('produtoId').value;
+        const nome = document.getElementById('nome').value;
+        const preco = parseFloat(document.getElementById('preco').value);
+        const quantidade = parseInt(document.getElementById('quantidade').value);
+
+        if (!nome || isNaN(preco) || isNaN(quantidade)) {
+            alert('Por favor, preencha todos os campos corretamente!');
+            return;
+        }
+
+        const produto = { nome, preco, quantidade };
+
+        let url = apiUrl;
+        let metodo = 'POST'; // Padrão: Adicionar novo
+
+        // Se tiver ID preenchido, é uma atualização (PUT)
+        if (id) {
+            url = `${apiUrl}/${id}`;
+            metodo = 'PUT';
+        }
+
+        try {
+            await fetch(url, {
+                method: metodo,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(produto)
+            });
+
+            limparFormulario();
+            carregarProdutos(); // Atualiza a vitrine
+        } catch (erro) {
+            console.error("Erro ao salvar:", erro);
+        }
+    }
+
+    // DELETE: Jogar fora o item
+    async function deletarProduto(id) {
+        if (confirm('Tem certeza que quer sumir com esse item da loja?')) {
+            try {
+                await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                carregarProdutos(); // Atualiza a vitrine
+            } catch (erro) {
+                console.error("Erro ao deletar:", erro);
+            }
+        }
+    }
+
+    // Joga os dados do produto para o formulário para a gente editar (PUT)
+    function prepararEdicao(id, nome, preco, quantidade) {
+        document.getElementById('produtoId').value = id;
+        document.getElementById('nome').value = nome;
+        document.getElementById('preco').value = preco;
+        document.getElementById('quantidade').value = quantidade;
+    }
+
+    // Limpa o balcão depois de salvar
+    function limparFormulario() {
+        document.getElementById('produtoId').value = '';
+        document.getElementById('nome').value = '';
+        document.getElementById('preco').value = '';
+        document.getElementById('quantidade').value = '';
+    }
+
+    // Chama a função de carregar assim que a página abrir
+    carregarProdutos();
+</script>
+
+</body>
+</html>
