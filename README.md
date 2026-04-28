@@ -9,6 +9,7 @@ Repositório das disciplinas ministradas pelo Prof. Bertoti no curso de Banco de
 ```
 Bertoti/
 ├── engenhariadesoftware/
+├── lab3/
 └── (em breve) ...
 ```
 
